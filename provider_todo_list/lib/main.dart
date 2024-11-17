@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider_todo_list/common/theme/app_theme.dart';
 import 'package:provider_todo_list/routes.dart';
 
 import 'features/todo_list/screens/main_screen/main_screen.dart';
@@ -15,10 +16,8 @@ class MyApp extends StatelessWidget {
       title: 'Todo list',
       initialRoute: '/',
       routes: Routes.routes,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: const MainScreen(),
     );
   }
