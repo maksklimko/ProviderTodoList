@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
       providers: Providers.providers,
       child: MaterialApp(
         title: 'Todo list',
-        initialRoute: Routes.mainScreen,
         routes: Routes.routes,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

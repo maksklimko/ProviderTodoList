@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class AppColors{
   AppColors._();
@@ -9,4 +9,5 @@ class AppColors{
   static const Color white = Color(0xFFFFFFFF);
 
   //Palette colors
+  static const Color blue = Colors.blue;
 }

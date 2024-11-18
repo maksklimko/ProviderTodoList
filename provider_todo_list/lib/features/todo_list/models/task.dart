@@ -1,31 +1,35 @@
 import 'package:provider_todo_list/features/todo_list/models/task_status.dart';
+import 'package:uuid/uuid.dart';
 
 class Task {
-  final String id; // Task identifier
-  final String title; // Title of the task
-  final TaskStatus status; // Status of the task
+  final String id;
+  final String title;
+  final TaskStatus status;
 
-  Task({
+  Task.firestore({
     required this.id,
     required this.title,
     this.status = TaskStatus.todo,
   });
 
-  // Factory method to create a Task object from JSON
+  Task({
+    required this.title,
+    this.status = TaskStatus.todo,
+  }) :id = Uuid().v4();
+
   factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
+    return Task.firestore(
       id: json['id'] as String,
       title: json['title'] as String,
       status:  TaskStatus.fromJson(json['status']),
     );
   }
 
-  // Method to convert a Task object to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
-      'status': status,
+      'status': status.name,
     };
   }
 }

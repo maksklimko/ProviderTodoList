@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider_todo_list/features/todo_list/screens/main_screen/main_screen.dart';
+import 'package:provider_todo_list/features/todo_list/screens/create_item_screen/create_item_screen.dart';
 
 class Routes {
   Routes._();
 
-  static const String mainScreen = '/mainScreen';
+  static const String createItemScreen = '/createItem';
 
   static final dynamic routes = <String, WidgetBuilder>{
-    mainScreen: (BuildContext context) => MainScreen(),
+    createItemScreen: (BuildContext context) => CreateItemScreen(),
   };
 }

@@ -10,6 +10,24 @@ class AppTheme {
     brightness: Brightness.light,
     primaryColor: AppColors.black,
     scaffoldBackgroundColor: AppColors.white,
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.grey, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.black, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.black, width: 2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      hintStyle: TextStyle(
+        fontSize: 20,
+        color: AppColors.black,
+      ),
+    ),
     textTheme: TextTheme(
       titleLarge: TextStyle(
         fontSize: 30,
@@ -44,6 +62,24 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: Colors.white,
       scaffoldBackgroundColor: Colors.black,
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColors.grey, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColors.white, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColors.white, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        hintStyle: TextStyle(
+          fontSize: 20,
+          color: AppColors.white,
+        ),
+      ),
       textTheme: TextTheme(
         titleLarge: TextStyle(
           fontSize: 38,
