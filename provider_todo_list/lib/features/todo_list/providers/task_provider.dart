@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider_todo_list/data/repositories/tasks_repository.dart';
+import 'package:provider_todo_list/features/todo_list/models/task_status.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
@@ -12,7 +13,13 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleTaskCompletion(String id) async {}
+  Future<void> toggleTaskCompletion(Task task) async {
+    final newTaskStatus = task.status == TaskStatus.completed
+        ? TaskStatus.todo
+        : TaskStatus.completed;
+    _tasks = await TasksRepository.changeTaskStatus(task, newTaskStatus);
+    notifyListeners();
+  }
 
   Future<void> deleteTask(Task task) async {
     await TasksRepository.deleteTask(task);
@@ -21,8 +28,10 @@ class TaskProvider with ChangeNotifier {
   void listenToTaskChanges() {
     TasksRepository.addTasksChangesListener(
       onChange: (tasks) {
-        _tasks = tasks;
-        notifyListeners();
+        if (tasks.length != _tasks.length) {
+          _tasks = tasks;
+          notifyListeners();
+        }
       },
     );
   }

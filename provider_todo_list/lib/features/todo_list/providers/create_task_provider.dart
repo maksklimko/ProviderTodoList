@@ -9,6 +9,7 @@ class CreateTaskProvider with ChangeNotifier {
     await TasksRepository.addTask(
       Task(title: taskTitleController.text),
     );
+    clearTaskTitle();
   }
 
   void clearTaskTitle() {
