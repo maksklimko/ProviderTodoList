@@ -1,37 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider_todo_list/features/todo_list/models/task_status.dart';
-
+import 'package:provider_todo_list/common/constants/firestore_collections.dart';
 import '../../features/todo_list/models/task.dart';
+import '../../features/todo_list/models/task_status.dart';
 import '../services/firestore_service.dart';
 
 class TasksRepository {
-  TasksRepository._();
+  final FirestoreService _firestoreService;
+  final String _userId = 'testUser';
 
-  static Future<List<Task>> fetchTasks() async {
+  TasksRepository(this._firestoreService);
+
+  Future<List<Task>> fetchTasks() async {
     try {
-      final data = await FirestoreService.fetchDocument(
-        collection: FirestoreService.usersCollection,
-        docId: "testUser",
+      final data = await _firestoreService.fetchDocument(
+        collection: FirestoreCollections.usersCollection,
+        docId: _userId,
       );
 
       final tasksData = data?['tasks'] as List<dynamic>?;
-
       if (tasksData != null) {
         return tasksData.map((task) => Task.fromJson(task)).toList();
-      } else {
-        return [];
       }
+      return [];
     } catch (e) {
       print('Error fetching tasks: $e');
       return [];
     }
   }
 
-  static Future<void> addTask(Task task) async {
+  Future<void> addTask(Task task) async {
     try {
-      await FirestoreService.updateDocument(
-        collection: FirestoreService.usersCollection,
-        docId: "testUser",
+      await _firestoreService.updateDocument(
+        collection: FirestoreCollections.usersCollection,
+        docId: _userId,
         updates: {
           'tasks': FieldValue.arrayUnion([task.toJson()]),
         },
@@ -41,11 +42,11 @@ class TasksRepository {
     }
   }
 
-  static Future<void> deleteTask(Task task) async {
+  Future<void> deleteTask(Task task) async {
     try {
-      await FirestoreService.updateDocument(
-        collection: FirestoreService.usersCollection,
-        docId: "testUser",
+      await _firestoreService.updateDocument(
+        collection: FirestoreCollections.usersCollection,
+        docId: _userId,
         updates: {
           'tasks': FieldValue.arrayRemove([task.toJson()]),
         },
@@ -55,50 +56,41 @@ class TasksRepository {
     }
   }
 
-  static Future<List<Task>> changeTaskStatus(
-    Task task,
-    TaskStatus newTaskStatus,
-  ) async {
+  Future<List<Task>> changeTaskStatus(Task task, TaskStatus newTaskStatus) async {
     try {
-      var tasks = await fetchTasks();
+      final tasks = await fetchTasks();
+      final index = tasks.indexWhere((e) => e.id == task.id);
 
-      final index = tasks.indexWhere((e) => task.id == e.id);
       if (index != -1) {
         tasks[index] = tasks[index].copyWith(status: newTaskStatus);
+         _firestoreService.updateDocument(
+          collection: FirestoreCollections.usersCollection,
+          docId: _userId,
+          updates: {
+            'tasks': tasks.map((task) => task.toJson()).toList(),
+          },
+        );
       } else {
         print('Task with ID ${task.id} not found');
       }
 
-      FirestoreService.updateDocument(
-        collection: FirestoreService.usersCollection,
-        docId: "testUser",
-        updates: {
-          'tasks': tasks.map((e) => e.toJson()),
-        },
-      );
       return tasks;
     } catch (e) {
-      print('Error completing task: $e');
+      print('Error updating task status: $e');
       return [];
     }
   }
 
-  static addTasksChangesListener({
-    required Function(List<Task>) onChange,
-  }) {
-    FirestoreService.addDocChangesListener(
-      collection: FirestoreService.usersCollection,
-      document: 'testUser',
-      onChange: (data) {
-        final tasksData = data['tasks'] as List<dynamic>?;
-
-        if (tasksData != null) {
-          final tasks = tasksData.map((task) => Task.fromJson(task)).toList();
-          onChange.call(tasks);
-        } else {
-          return [];
-        }
-      },
-    );
+  void addTasksChangesListener({required Function(List<Task>) onChange}) {
+    _firestoreService.listenToDocumentChanges(
+      collection: FirestoreCollections.usersCollection,
+      docId: _userId,
+    ).listen((data) {
+      final tasksData = data?['tasks'] as List<dynamic>?;
+      if (tasksData != null) {
+        final tasks = tasksData.map((task) => Task.fromJson(task)).toList();
+        onChange(tasks);
+      }
+    });
   }
 }

@@ -4,12 +4,15 @@ import 'package:provider_todo_list/features/todo_list/models/task_status.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
+  final TasksRepository tasksRepository;
   List<Task> _tasks = [];
+
+  TaskProvider({required this.tasksRepository});
 
   List<Task> get tasks => _tasks;
 
   Future<void> fetchTasks() async {
-    _tasks = await TasksRepository.fetchTasks();
+    _tasks = await tasksRepository.fetchTasks();
     notifyListeners();
   }
 
@@ -17,16 +20,16 @@ class TaskProvider with ChangeNotifier {
     final newTaskStatus = task.status == TaskStatus.completed
         ? TaskStatus.todo
         : TaskStatus.completed;
-    _tasks = await TasksRepository.changeTaskStatus(task, newTaskStatus);
+    _tasks = await tasksRepository.changeTaskStatus(task, newTaskStatus);
     notifyListeners();
   }
 
   Future<void> deleteTask(Task task) async {
-    await TasksRepository.deleteTask(task);
+    await tasksRepository.deleteTask(task);
   }
 
   void listenToTaskChanges() {
-    TasksRepository.addTasksChangesListener(
+    tasksRepository.addTasksChangesListener(
       onChange: (tasks) {
         if (tasks.length != _tasks.length) {
           _tasks = tasks;
