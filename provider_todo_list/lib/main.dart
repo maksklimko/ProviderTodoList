@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:provider_todo_list/common/theme/app_theme.dart';
+import 'package:provider_todo_list/providers.dart';
 import 'package:provider_todo_list/routes.dart';
 
 import 'features/todo_list/screens/main_screen/main_screen.dart';
@@ -20,13 +22,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Todo list',
-      initialRoute: Routes.mainScreen,
-      routes: Routes.routes,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      home: const MainScreen(),
+    return MultiProvider(
+      providers: Providers.providers,
+      child: MaterialApp(
+        title: 'Todo list',
+        initialRoute: Routes.mainScreen,
+        routes: Routes.routes,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        home: const MainScreen(),
+      ),
     );
   }
 }
