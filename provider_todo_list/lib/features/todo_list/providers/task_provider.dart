@@ -17,4 +17,13 @@ class TaskProvider with ChangeNotifier {
   Future<void> toggleTaskCompletion(String id) async {}
 
   Future<void> deleteTask(String id) async {}
+
+  void listenToTaskChanges() {
+    FirestoreService.addTasksChangesListener(
+      onChange: (tasks) {
+        _tasks = tasks;
+        notifyListeners();
+      },
+    );
+  }
 }

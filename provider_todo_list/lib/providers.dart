@@ -4,7 +4,7 @@ class Providers {
   Providers._();
   static final providers= [
     ChangeNotifierProvider<TaskProvider>(
-      create: (_) =>  TaskProvider()..fetchTasks(),
+      create: (_) =>  TaskProvider()..listenToTaskChanges(),
     ),
   ].toList();
 }

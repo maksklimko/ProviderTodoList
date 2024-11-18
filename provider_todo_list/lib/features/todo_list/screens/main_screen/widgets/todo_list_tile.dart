@@ -10,11 +10,14 @@ class TodoListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: double.infinity,
-      color: AppColors.grey,
-      child: Text(task.title),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        color: AppColors.grey,
+        child: Text(task.title),
+      ),
     );
   }
 }

@@ -25,4 +25,35 @@ class FirestoreService {
       return [];
     }
   }
+
+  static addTasksChangesListener({
+    required Function(List<Task>) onChange,
+  }) {
+    addDocChangesListener(
+      collection: usersCollection,
+      document: 'testUser',
+      onChange: (data) {
+        final tasksData = data['tasks'] as List<dynamic>?;
+
+        if (tasksData != null) {
+          final tasks = tasksData.map((task) => Task.fromJson(task)).toList();
+          onChange.call(tasks);
+        } else {
+          return [];
+        }
+      },
+    );
+  }
+
+  static addDocChangesListener({
+    required String collection,
+    required String document,
+    required Function(Map<String, dynamic>) onChange,
+  }) {
+    FirebaseFirestore.instance
+        .collection(collection)
+        .doc(document)
+        .snapshots()
+        .listen((snapshot) => onChange.call(snapshot.data() ?? {}));
+  }
 }
