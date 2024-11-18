@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider_todo_list/data/repositories/tasks_repository.dart';
 import 'package:provider_todo_list/features/todo_list/models/task.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateTaskProvider with ChangeNotifier {
   final TextEditingController taskTitleController = TextEditingController();
@@ -8,7 +9,7 @@ class CreateTaskProvider with ChangeNotifier {
 
   Future createTask() async {
     await TasksRepository.addTask(
-      Task(title: taskTitleController.text),
+      Task(id:Uuid().v4(),title: taskTitleController.text),
     );
 
     clearTaskTitle();
