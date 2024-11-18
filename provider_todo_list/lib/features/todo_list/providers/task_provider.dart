@@ -14,7 +14,9 @@ class TaskProvider with ChangeNotifier {
 
   Future<void> toggleTaskCompletion(String id) async {}
 
-  Future<void> deleteTask(String id) async {}
+  Future<void> deleteTask(Task task) async {
+    await TasksRepository.deleteTask(task);
+  }
 
   void listenToTaskChanges() {
     TasksRepository.addTasksChangesListener(

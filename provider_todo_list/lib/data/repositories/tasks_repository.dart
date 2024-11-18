@@ -40,6 +40,20 @@ class TasksRepository{
     }
   }
 
+  static Future<void> deleteTask(Task task) async {
+    try {
+      await FirestoreService.updateDocument(
+        collection: FirestoreService.usersCollection,
+        docId: "testUser",
+        updates: {
+          'tasks': FieldValue.arrayRemove([task.toJson()]),
+        },
+      );
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
+  }
+
   static addTasksChangesListener({
     required Function(List<Task>) onChange,
   }) {
