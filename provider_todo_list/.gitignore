@@ -64,10 +64,6 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
-lib/firebase_options.dart
-firebase.json
-*.freezed.dart
-*.g.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
