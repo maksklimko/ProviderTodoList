@@ -31,6 +31,7 @@ class CreateItemScreen extends StatelessWidget {
                   ),
                   TextFormField(
                     controller: model.taskTitleController,
+                    style: Theme.of(context).textTheme.labelMedium,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'Please enter a title';
